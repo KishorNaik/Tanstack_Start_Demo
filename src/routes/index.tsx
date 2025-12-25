@@ -6,10 +6,21 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { sampleProducts } from '@/data/seed.ts'
+import { ProductCard } from '@/components/ProductCard.tsx'
 
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createFileRoute('/')({ component: App,
+  loader: async () => {
+    // const response=await fetch(`https://fakestoreapi.com/products`);
+    // const data= await response.json();
+    // return {products:data.slice(0,4)};
+    return {products: sampleProducts.slice(0,3)}
+  }
+})
 
 function App() {
+
+  const {products}=Route.useLoaderData();
 
   return (
     <>
@@ -60,10 +71,9 @@ function App() {
               </div>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-6">
-              {/* TODO: Product Map*/}
-              {/*{products.map((product, index) => (*/}
-              {/*  <ProductCard product={product} key={`product-${index}`} />*/}
-              {/*))}*/}
+              {products.map((product, index) => (
+                <ProductCard product={product} key={`product-${index}`} />
+              ))}
             </div>
           </Card>
         </section>
